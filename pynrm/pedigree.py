@@ -6,7 +6,7 @@ male = pd.DataFrame({
     "gen": 0,
     "sire": None,
     "dam": None,
-    "ebv": round(np.random.normal(0, 1, size=500), 3),
+    "ebv": np.random.normal(0, 1, size=500),
     "sex": "M"
 })
 
@@ -14,7 +14,7 @@ female = pd.DataFrame({
     "gen": 0,
     "sire": None,
     "dam": None,
-    "ebv": round(np.random.normal(0, 1, size=500), 3),
+    "ebv": np.random.normal(0, 1, size=500),
     "sex": "F"
 })
 
