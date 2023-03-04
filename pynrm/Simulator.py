@@ -1,7 +1,7 @@
 import numpy as np
 import random
-from nrm import get_nrm
-from pedigree import pedigree
+from .nrm import get_nrm
+from .pedigree import pedigree
 
 
 class Simulator:
@@ -35,13 +35,17 @@ class Simulator:
         h_sqrt = np.sqrt(self.h)
         v = round(np.random.normal(0, 1), 3)
         w = round(np.random.normal(0, 1), 3)
-        f = 0.5 * (get_nrm(self.pedigree, sire, sire)
-                   + get_nrm(self.pedigree, dam, dam)) - 1
+        f = 0.5 * (
+            get_nrm(self.pedigree, sire, sire)
+            + get_nrm(self.pedigree, dam, dam)
+            ) - 1
 
-        ebv = 0.5 * (self.pedigree.iloc[sire].ebv
-                     + self.pedigree.iloc[dam].ebv)
-        + v * h_sqrt * np.sqrt((1 - f)/2)
-        + w * np.sqrt(1 - self.h)
+        ebv = 0.5 * (
+            self.pedigree.iloc[sire].ebv
+            + self.pedigree.iloc[dam].ebv
+            )
+        +v * h_sqrt * np.sqrt((1 - f) / 2)
+        +w * np.sqrt(1 - self.h)
 
         return round(ebv, 3)
 
@@ -132,7 +136,8 @@ class Simulator:
 
         for i in range(len(top_males)):
             sire = top_males[i]
-            female_group = top_females[10 * i:10 * (i + 1):]
+            breed_ratio = int(self.female_k / self.male_k)
+            female_group = top_females[breed_ratio * i:breed_ratio * (i + 1):]
 
             for j in range(len(female_group)):
                 dam = top_females[j]
@@ -144,7 +149,7 @@ class Simulator:
                         "sire": sire,
                         "dam": dam,
                         "ebv": ebv,
-                        "sex": random.choices(["M", "F"])[0]
+                        "sex": random.choices(["M", "F"])[0],
                     }
                     new_pedigree = new_pedigree.append(
                         new_animal,
