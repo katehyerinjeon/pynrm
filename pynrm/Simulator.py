@@ -28,22 +28,16 @@ class Simulator:
         """
 
         if sire < 0:
-            raise ValueError('\'sire\' cannot be negative')
+            raise ValueError("'sire' cannot be negative")
         if dam < 0:
-            raise ValueError('\'dam\' cannot be negative')
+            raise ValueError("'dam' cannot be negative")
 
         h_sqrt = np.sqrt(self.h)
         v = round(np.random.normal(0, 1), 3)
         w = round(np.random.normal(0, 1), 3)
-        f = 0.5 * (
-            get_nrm(self.pedigree, sire, sire)
-            + get_nrm(self.pedigree, dam, dam)
-            ) - 1
+        f = 0.5 * (get_nrm(self.pedigree, sire, sire) + get_nrm(self.pedigree, dam, dam)) - 1
 
-        ebv = 0.5 * (
-            self.pedigree.iloc[sire].ebv
-            + self.pedigree.iloc[dam].ebv
-            )
+        ebv = 0.5 * (self.pedigree.iloc[sire].ebv + self.pedigree.iloc[dam].ebv)
         +v * h_sqrt * np.sqrt((1 - f) / 2)
         +w * np.sqrt(1 - self.h)
 
@@ -91,7 +85,7 @@ class Simulator:
         """
 
         if len(top_k) > k:
-            raise ValueError('Length of \'top_k\' should not exceed k')
+            raise ValueError("Length of 'top_k' should not exceed k")
 
         # base case - top k animals selected
         if len(top_k) == k:
@@ -124,8 +118,8 @@ class Simulator:
         :rtype: dataframe
         """
 
-        all_males = self.pedigree[self.pedigree['sex'] == 'M'].index.tolist()
-        all_females = self.pedigree[self.pedigree['sex'] == 'F'].index.tolist()
+        all_males = self.pedigree[self.pedigree["sex"] == "M"].index.tolist()
+        all_females = self.pedigree[self.pedigree["sex"] == "F"].index.tolist()
 
         top_males = self.get_top_k([], all_males, self.male_k)
         top_females = self.get_top_k([], all_females, self.female_k)
@@ -137,7 +131,7 @@ class Simulator:
         for i in range(len(top_males)):
             sire = top_males[i]
             breed_ratio = int(self.female_k / self.male_k)
-            female_group = top_females[breed_ratio * i:breed_ratio * (i + 1):]
+            female_group = top_females[breed_ratio * i : breed_ratio * (i + 1) :]
 
             for j in range(len(female_group)):
                 dam = top_females[j]
@@ -151,10 +145,7 @@ class Simulator:
                         "ebv": ebv,
                         "sex": random.choices(["M", "F"])[0],
                     }
-                    new_pedigree = new_pedigree.append(
-                        new_animal,
-                        ignore_index=True
-                    )
+                    new_pedigree = new_pedigree.append(new_animal, ignore_index=True)
 
         self.pedigree = new_pedigree
 

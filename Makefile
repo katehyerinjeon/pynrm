@@ -15,7 +15,7 @@ install:  ## install library
 #########
 lint:  ## run static analysis with flake8
 	python -m black --check pynrm setup.py
-	python -m flake8 pynrm setup.py
+	python -m flake8 --max-line-length=120 --extend-ignore=E203 pynrm setup.py
 
 # Alias
 lints: lint

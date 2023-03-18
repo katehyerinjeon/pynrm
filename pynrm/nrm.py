@@ -11,9 +11,9 @@ def get_nrm(pedigree, i, j):
     """
 
     if i < 0:
-        raise ValueError('\'i\' cannot be negative')
+        raise ValueError("'i' cannot be negative")
     if j < 0:
-        raise ValueError('\'j\' cannot be negative')
+        raise ValueError("'j' cannot be negative")
 
     # swap i and j if i is larger than j
     if i > j:
