@@ -1,26 +1,40 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-# random generate initial generation of 500 males and females each
-male = pd.DataFrame(
-    {
-        "gen": 0,
-        "sire": None,
-        "dam": None,
-        "ebv": np.random.normal(0, 1, size=500),
-        "sex": "M",
-    }
-)
 
-female = pd.DataFrame(
-    {
-        "gen": 0,
-        "sire": None,
-        "dam": None,
-        "ebv": np.random.normal(0, 1, size=500),
-        "sex": "F",
-    }
-)
+class Pedigree:
+    def __init__(self, data=None):
+        dtype = {
+            "gen": int,
+            "sire": int,
+            "dam": int,
+            "ebv": float,
+            "sex": str
+        }
 
-# create a pedigree containing initial generation males and females
-pedigree = male.append(female, ignore_index=True)
+        if data is not None:
+            if isinstance(data, pd.DataFrame):
+                self.data = pd.DataFrame(data=data, columns=["gen", "sire", "dam", "ebv", "sex"]).astype(dtype=dtype)
+            else:
+                raise TypeError("'data' must be of type dataframe")
+        else:
+            male = pd.DataFrame(
+                {
+                    "gen": 0,
+                    "sire": None,
+                    "dam": None,
+                    "ebv": np.random.normal(0, 1, size=500),
+                    "sex": "M",
+                }
+            )
+            female = pd.DataFrame(
+                {
+                    "gen": 0,
+                    "sire": None,
+                    "dam": None,
+                    "ebv": np.random.normal(0, 1, size=500),
+                    "sex": "F",
+                }
+            )
+            data = male.append(female, ignore_index=True)
+            self.data = pd.DataFrame(data=data, columns=["gen", "sire", "dam", "ebv", "sex"]).astype(dtype=dtype)

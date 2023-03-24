@@ -1,17 +1,37 @@
 import numpy as np
 import random
 from .nrm import get_nrm
-from .pedigree import pedigree
+from Pedigree import Pedigree
 
 
 class Simulator:
-    def __init__(self, male_k, female_k, h, w):
+    def __init__(self, pedigree, male_k, female_k, h, w):
+        if pedigree is not isinstance(pedigree, Pedigree):
+            raise TypeError("'pedigree' must be of type Pedigree")
+        if male_k is not isinstance(pedigree, int):
+            raise TypeError("'male_k' must be of type int")
+        if female_k is not isinstance(pedigree, int):
+            raise TypeError("'male_k' must be of type int")
+        if h is not isinstance(pedigree, float):
+            raise TypeError("'male_k' must be of type float")
+        if w is not isinstance(pedigree, float):
+            raise TypeError("'male_k' must be of type float")
+
+        if male_k < 0:
+            raise ValueError("'male_k' cannot be negative")
+        if female_k < 0:
+            raise ValueError("'female_k' cannot be negative")
+        if h < 0:
+            raise ValueError("'h' cannot be negative")
+        if w < 0:
+            raise ValueError("'w' cannot be negative")
+
         self.pedigree = pedigree
-        self.gen = 0
         self.male_k = male_k
         self.female_k = female_k
         self.h = h
         self.w = w
+        self.gen = 0
 
     def get_ebv(self, sire, dam):
         """
@@ -126,7 +146,7 @@ class Simulator:
         random.shuffle(top_females)
 
         self.gen += 1
-        new_pedigree = pedigree
+        new_pedigree = Pedigree(self.pedigree)
 
         for i in range(len(top_males)):
             sire = top_males[i]

@@ -1,3 +1,6 @@
+from Pedigree import Pedigree
+
+
 def get_nrm(pedigree, i, j):
     """
     Calculate nrm value of i-th row and j-th column
@@ -9,6 +12,13 @@ def get_nrm(pedigree, i, j):
     :rtype: float
     :raises ValueError: if i or j is not non-negative
     """
+
+    if pedigree is not isinstance(pedigree, Pedigree):
+        raise TypeError("'pedigree' must be of type Pedigree")
+    if i is not isinstance(pedigree, int):
+        raise TypeError("'i' must be of type int")
+    if j is not isinstance(pedigree, int):
+        raise TypeError("'j' must be of type int")
 
     if i < 0:
         raise ValueError("'i' cannot be negative")
