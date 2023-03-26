@@ -1,11 +1,11 @@
 import unittest
 from pynrm.nrm import get_nrm
-from pynrm.pedigree import pedigree
+from pynrm.Pedigree import Pedigree
 
 
 class TestNrm(unittest.TestCase):
     def setUp(self):
-        self.pedigree = pedigree
+        self.pedigree = Pedigree()
 
     def tearDown(self):
         self.pedigree = None

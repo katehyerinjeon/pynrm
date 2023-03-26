@@ -4,13 +4,7 @@ import pandas as pd
 
 class Pedigree:
     def __init__(self, data=None):
-        dtype = {
-            "gen": int,
-            "sire": int,
-            "dam": int,
-            "ebv": float,
-            "sex": str
-        }
+        dtype = {"gen": int, "sire": pd.Int64Dtype(), "dam": pd.Int64Dtype(), "ebv": float, "sex": str}
 
         if data is not None:
             if isinstance(data, pd.DataFrame):

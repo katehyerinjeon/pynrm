@@ -1,21 +1,21 @@
 import numpy as np
 import random
 from .nrm import get_nrm
-from Pedigree import Pedigree
+from .Pedigree import Pedigree
 
 
 class Simulator:
     def __init__(self, pedigree, male_k, female_k, h, w):
-        if pedigree is not isinstance(pedigree, Pedigree):
+        if not isinstance(pedigree, Pedigree):
             raise TypeError("'pedigree' must be of type Pedigree")
-        if male_k is not isinstance(pedigree, int):
+        if not isinstance(male_k, int):
             raise TypeError("'male_k' must be of type int")
-        if female_k is not isinstance(pedigree, int):
-            raise TypeError("'male_k' must be of type int")
-        if h is not isinstance(pedigree, float):
-            raise TypeError("'male_k' must be of type float")
-        if w is not isinstance(pedigree, float):
-            raise TypeError("'male_k' must be of type float")
+        if not isinstance(female_k, int):
+            raise TypeError("'female_k' must be of type int")
+        if not isinstance(h, float):
+            raise TypeError("'h' must be of type float")
+        if not isinstance(w, float):
+            raise TypeError("'w' must be of type float")
 
         if male_k < 0:
             raise ValueError("'male_k' cannot be negative")
@@ -57,7 +57,7 @@ class Simulator:
         w = round(np.random.normal(0, 1), 3)
         f = 0.5 * (get_nrm(self.pedigree, sire, sire) + get_nrm(self.pedigree, dam, dam)) - 1
 
-        ebv = 0.5 * (self.pedigree.iloc[sire].ebv + self.pedigree.iloc[dam].ebv)
+        ebv = 0.5 * (self.pedigree.data.iloc[sire].ebv + self.pedigree.data.iloc[dam].ebv)
         +v * h_sqrt * np.sqrt((1 - f) / 2)
         +w * np.sqrt(1 - self.h)
 
@@ -76,7 +76,7 @@ class Simulator:
         :rtype: float
         """
 
-        ebv = self.pedigree.iloc[candidate].ebv
+        ebv = self.pedigree.data.iloc[candidate].ebv
 
         # if none selected as top k, then original ebv is used for scoring
         if len(top_k) == 0:
@@ -138,15 +138,15 @@ class Simulator:
         :rtype: dataframe
         """
 
-        all_males = self.pedigree[self.pedigree["sex"] == "M"].index.tolist()
-        all_females = self.pedigree[self.pedigree["sex"] == "F"].index.tolist()
+        all_males = self.pedigree.data[self.pedigree.data["sex"] == "M"].index.tolist()
+        all_females = self.pedigree.data[self.pedigree.data["sex"] == "F"].index.tolist()
 
         top_males = self.get_top_k([], all_males, self.male_k)
         top_females = self.get_top_k([], all_females, self.female_k)
         random.shuffle(top_females)
 
         self.gen += 1
-        new_pedigree = Pedigree(self.pedigree)
+        new_pedigree_data = self.pedigree.data
 
         for i in range(len(top_males)):
             sire = top_males[i]
@@ -165,8 +165,8 @@ class Simulator:
                         "ebv": ebv,
                         "sex": random.choices(["M", "F"])[0],
                     }
-                    new_pedigree = new_pedigree.append(new_animal, ignore_index=True)
+                    new_pedigree_data = new_pedigree_data.append(new_animal, ignore_index=True)
 
-        self.pedigree = new_pedigree
+        self.pedigree = Pedigree(new_pedigree_data)
 
-        return new_pedigree
+        return new_pedigree_data

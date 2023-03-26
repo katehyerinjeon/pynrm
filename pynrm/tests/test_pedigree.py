@@ -7,4 +7,4 @@ class TestSimulator(unittest.TestCase):
         self.pedigree = Pedigree()
 
     def tearDown(self):
-        self.simulator = None
+        self.pedigree = None
