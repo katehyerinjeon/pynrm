@@ -33,11 +33,10 @@ simulator = Simulator(pedigree, 10, 100, 0.6, 1)
 simulator.reproduce()
 ```
 
-- Data visualization of simulation results
-- Data analysis of simulation results
+- Data visualization and analysis of simulation results (COMING SOON)
 
 ## Documentation
 -- LINK TO OFFICIAL DOC COMING SOON --
 
 ## Contribution
-Please see [contribution guidelines](CONTRIBUTING.md).
+Contributions are welcome! There are many ways to contribute to this project. Get started [here](CONTRIBUTING.md).
