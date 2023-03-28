@@ -12,7 +12,7 @@ class TestSimulator(unittest.TestCase):
 
     def test_pedigree(self):
         with self.assertRaises(TypeError):
-            Pedigree("wrong data type")
+            Pedigree("not dataframe")
 
         self.assertEqual(self.pedigree.data.shape[1], 5, "expected 5 columns")
         self.assertEqual(self.pedigree.data[self.pedigree.data["sex"] == "M"].shape[0], 500, "expected 500 males")

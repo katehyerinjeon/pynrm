@@ -10,6 +10,26 @@ class TestSimulator(unittest.TestCase):
     def tearDown(self):
         self.simulator = None
 
+    def test_simulator(self):
+        with self.assertRaises(TypeError):
+            Simulator("not dataframe", 2, 4, 0.6, 0.2)
+        with self.assertRaises(TypeError):
+            Simulator(self.simulator.pedigree, "not int", 4, 0.6, 0.2)
+        with self.assertRaises(TypeError):
+            Simulator(self.simulator.pedigree, 2, "not int", 0.6, 0.2)
+        with self.assertRaises(TypeError):
+            Simulator(self.simulator.pedigree, 2, 4, "not float", 0.2)
+        with self.assertRaises(TypeError):
+            Simulator(self.simulator.pedigree, 2, 4, 0.6, "not float")
+        with self.assertRaises(ValueError):
+            Simulator(self.simulator.pedigree, -2, 4, 0.6, 0.2)
+        with self.assertRaises(ValueError):
+            Simulator(self.simulator.pedigree, 2, -4, 0.6, 0.2)
+        with self.assertRaises(ValueError):
+            Simulator(self.simulator.pedigree, 2, 4, -0.6, 0.2)
+        with self.assertRaises(ValueError):
+            Simulator(self.simulator.pedigree, 2, 4, 0.6, -0.2)
+
     def test_get_ebv(self):
         with self.assertRaises(ValueError):
             self.simulator.get_ebv(-1, 0)
