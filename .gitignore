@@ -53,6 +53,8 @@ python_junit.xml
 
 # Documentation
 docs/_build/
+docs/_static/
+docs/_templates/
 /site
 
 # PyBuilder
