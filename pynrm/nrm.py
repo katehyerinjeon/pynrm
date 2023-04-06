@@ -3,15 +3,17 @@ from .Pedigree import Pedigree
 
 
 def get_nrm(pedigree, i, j):
-    """
-    Calculate nrm value of i-th row and j-th column
+    """Calculates the numerator relationship matrix (NRM) value.
 
-    :param dataframe pedigree: pedigree of animals
-    :param int i: id of the first animal
-    :param int j: id of the second animal (can be same as i)
-    :return: nrm value of i-th rown and j-th column
-    :rtype: float
-    :raises ValueError: if i or j is not non-negative
+    Recursively computes the (i, j) value of NRM using information available from the pedigree provided.
+
+    Args:
+        pedigree: An instance of Pedigree class holding the recorded ancestry data.
+        i: An integer indicating the row.
+        j: An integer indicating the column.
+
+    Returns:
+        A float that corresponds to the (i, j) value of NRM.
     """
 
     if not isinstance(pedigree, Pedigree):
