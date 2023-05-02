@@ -37,7 +37,7 @@ simulator.reproduce()
 - Data visualization and analysis of simulation results (COMING SOON)
 
 ## Documentation
--- LINK TO OFFICIAL DOC COMING SOON --
+Official documentation is available [here](https://pynrm.readthedocs.io/).
 
 ## Contribution
 Contributions are welcome! There are many ways to contribute to this project. Get started [here](CONTRIBUTING.md).
