@@ -41,6 +41,9 @@ class TestSimulator(unittest.TestCase):
         self.assertEqual(self.simulator.get_adjusted_ebv(0, []), ebv, "incorrect adjusted ebv value")
 
     def test_get_top_k(self):
+        with self.assertRaises(ValueError):
+            self.simulator.get_top_k([1, 2, 3], [1, 2, 3], 1)
+
         best_ebv = self.simulator.pedigree.data.iloc[[1, 2, 3]][["ebv"]].idxmax()[0]
         self.assertEqual(
             self.simulator.get_top_k([], [1, 2, 3], 0),

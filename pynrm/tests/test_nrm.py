@@ -21,6 +21,7 @@ class TestNrm(unittest.TestCase):
             get_nrm(self.pedigree, -1, 0)
         with self.assertRaises(ValueError):
             get_nrm(self.pedigree, 0, -1)
+
         self.assertEqual(get_nrm(self.pedigree, 0, 0), 1, "wrong nrm value")
 
     def test_get_avg_inbreeding(self):
