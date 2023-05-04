@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from Pedigree import Pedigree
+from .Pedigree import Pedigree
 
 
 def get_nrm(pedigree, i, j):
