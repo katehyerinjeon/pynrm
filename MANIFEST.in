@@ -8,6 +8,7 @@ include CONTRIBUTING.md
 include .bumpversion.cfg
 include pyproject.toml
 include Makefile
+include *.yaml
 
 prune .vscode
 prune .github
