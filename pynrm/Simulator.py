@@ -57,7 +57,7 @@ class Simulator:
         self.gen = 0
 
     def get_ebv(self, sire, dam):
-        """Randomly generates EBV for an individual animal.
+        """Randomly generates EBV of an individual animal.
 
         EBV is computed using heritability, EBV values and inbreeding coefficients of sire and dam. It first solves the
         square root of heritability and average of inbreeding coefficients of sire and dam derived from NRM. Then, it
@@ -180,24 +180,18 @@ class Simulator:
         new_pedigree_data = self.pedigree.data
         self.gen += 1
 
-        # breed selected animals and update pedigree data by appending newly bred animals
         for i in range(len(top_males)):
             sire = top_males[i]
-            breed_ratio = int(self.female_k / self.male_k)
-            female_group = top_females[breed_ratio * i : breed_ratio * (i + 1) :]
-
-            for j in range(len(female_group)):
+            for j in range(len(top_females)):
                 dam = top_females[j]
                 ebv = self.get_ebv(sire, dam)
-
-                for k in range(breed_ratio):
-                    new_pedigree_data.loc[len(new_pedigree_data.index)] = [
-                        self.gen,
-                        sire,
-                        dam,
-                        ebv,
-                        random.choices(["M", "F"])[0],
-                    ]
+                new_pedigree_data.loc[len(new_pedigree_data.index)] = [
+                    self.gen,
+                    sire,
+                    dam,
+                    ebv,
+                    random.choices(["M", "F"])[0],
+                ]
 
         self.pedigree = Pedigree(new_pedigree_data)
 

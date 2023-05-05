@@ -20,3 +20,10 @@ class TestSimulator(unittest.TestCase):
         self.assertEqual(self.pedigree.data["gen"][0], 0, "expected generation 0")
         self.assertTrue(pd.isna(self.pedigree.data["sire"][0]), "expected sire NA")
         self.assertTrue(pd.isna(self.pedigree.data["dam"][0]), "expected dam NA")
+
+    def test_get_avg_ebv(self):
+        with self.assertRaises(TypeError):
+            self.pedigree.get_avg_ebv("not int")
+
+        self.pedigree.data["ebv"] = 1.5
+        self.assertEqual(self.pedigree.get_avg_ebv(0), 1.5, "expected average EBV 1.5")

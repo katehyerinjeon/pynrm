@@ -54,3 +54,20 @@ class Pedigree:
             )
             data = pd.concat([male, female], ignore_index=True, copy=False)
             self.data = pd.DataFrame(data=data, columns=["gen", "sire", "dam", "ebv", "sex"]).astype(dtype=dtype)
+
+    def get_avg_ebv(self, gen):
+        """Returns the average EBV of a generation.
+
+        Average EBV is computed across the generation.
+
+        Args:
+            gen: An integer indicating the generation number.
+
+        Returns:
+            A float that corresponds to the average EBV of the given generation.
+        """
+
+        if not isinstance(gen, int):
+            raise TypeError("'gen' must be of type int")
+
+        return round(self.data[self.data["gen"] == gen]["ebv"].mean(), 3)

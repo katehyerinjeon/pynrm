@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from .Pedigree import Pedigree
 
@@ -18,9 +19,9 @@ def get_nrm(pedigree, i, j):
 
     if not isinstance(pedigree, Pedigree):
         raise TypeError("'pedigree' must be of type Pedigree")
-    if i is not pd.NA and not isinstance(i, int):
+    if i is not pd.NA and not isinstance(i, int) and not isinstance(i, np.int64):
         raise TypeError("'i' must be of type int")
-    if j is not pd.NA and not isinstance(j, int):
+    if j is not pd.NA and not isinstance(j, int) and not isinstance(i, np.int64):
         raise TypeError("'j' must be of type int")
 
     if i is not pd.NA and i < 0:
@@ -57,3 +58,32 @@ def get_nrm(pedigree, i, j):
             res = 0
 
     return round(float(res), 3)
+
+
+def get_avg_inbreeding(pedigree, gen):
+    """Returns the average inbreeding rate of a generation.
+
+    Average inbreeding rate is calculated across the generation.
+
+    Args:
+        gen: An integer indicating the generation number.
+
+    Returns:
+        A float that corresponds to the average inbreeding rate of the given generation.
+    """
+
+    if not isinstance(pedigree, Pedigree):
+        raise TypeError("'pedigree' must be of type Pedigree")
+    if not isinstance(gen, int):
+        raise TypeError("'gen' must be of type int")
+
+    ids = pedigree.data.index[pedigree.data["gen"] == gen].tolist()
+    if len(ids) == 0:
+        raise ValueError("'gen' must be present in the 'pedigree'")
+
+    sum_inbreeding = 0
+    for i in ids:
+        sum_inbreeding += get_nrm(pedigree, i, i) - 1
+    avg_inbreeding = sum_inbreeding / len(ids)
+
+    return round(avg_inbreeding, 3)
