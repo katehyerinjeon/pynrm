@@ -24,6 +24,7 @@ recursive-include docs Makefile
 global-exclude *~
 global-exclude *.pyc
 global-exclude *.pyo
+global-exclude *.png
 global-exclude .git
 global-exclude .ipynb_checkpoints
 global-exclude .DS_Store
