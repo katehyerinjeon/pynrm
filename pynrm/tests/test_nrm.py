@@ -1,11 +1,11 @@
 import unittest
 from pynrm.nrm import get_nrm, get_avg_inbreeding
-from pynrm.Pedigree import Pedigree
+import pynrm.Pedigree as Pedigree
 
 
 class TestNrm(unittest.TestCase):
     def setUp(self):
-        self.pedigree = Pedigree()
+        self.pedigree = Pedigree.Pedigree()
 
     def tearDown(self):
         self.pedigree = None

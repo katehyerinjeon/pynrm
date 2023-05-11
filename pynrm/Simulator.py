@@ -1,6 +1,7 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import random
-from .nrm import get_nrm
+from .nrm import get_nrm, get_avg_inbreeding
 from .Pedigree import Pedigree
 
 
@@ -59,9 +60,9 @@ class Simulator:
     def get_ebv(self, sire, dam):
         """Randomly generates EBV of an individual animal.
 
-        EBV is computed using heritability, EBV values and inbreeding coefficients of sire and dam. It first solves the
+        EBV is computed using heritability, EBV and inbreeding coefficients of sire and dam. It first solves the
         square root of heritability and average of inbreeding coefficients of sire and dam derived from NRM. Then, it
-        calculates some values, multiplies by random normal deviates, and adds them to the average of EBV values of
+        calculates some values, multiplies by random normal deviates, and adds them to the average of EBV of
         sire and dam.
 
         Args:
@@ -69,7 +70,7 @@ class Simulator:
             dam: An integer indicating the dam id.
 
         Returns:
-            A float that corresponds to the randomly generated ebv value.
+            A float that corresponds to the randomly generated EBV.
         """
 
         if sire < 0:
@@ -87,10 +88,10 @@ class Simulator:
         return round(ebv, 3)
 
     def get_adjusted_ebv(self, candidate, already_selected):
-        """Computes adjusted EBV value of the candidate.
+        """Computes adjusted EBV of the candidate.
 
-        EBV values are adjusted to alleviate high inbreeding when selecting top k animals. This is calculated by
-        solving the average relationship between the candidate and already selected animals. EBV value of the candidate
+        EBV is adjusted to alleviate high inbreeding when selecting top k animals. This is calculated by
+        solving the average relationship between the candidate and already selected animals. EBV of the candidate
         is then penalized for the average relationship with the user-defined weight of the simulator.
 
         Args:
@@ -98,7 +99,7 @@ class Simulator:
             already_selected: A list of already selected animals.
 
         Returns:
-            A float that corresponds to the adjusted EBV value of the candidate.
+            A float that corresponds to the adjusted EBV of the candidate.
         """
 
         ebv = self.pedigree.data.iloc[candidate].ebv
@@ -140,10 +141,10 @@ class Simulator:
         if len(top_k) == k:
             return top_k
 
+        # print("Length of candidates:", len(candidates))
         # recursive case
         for i, candidate in enumerate(candidates):
             adjusted_ebv = self.get_adjusted_ebv(candidate, top_k)
-
             if i == 0:
                 selected = candidate
                 max_adjusted_ebv = adjusted_ebv
@@ -174,7 +175,9 @@ class Simulator:
 
         # select top males and females to reproduce
         top_males = self.get_top_k([], all_males, self.male_k)
+        # print("Get top {} males from {} done".format(self.male_k, len(all_males)))
         top_females = self.get_top_k([], all_females, self.female_k)
+        # print("Get top {} females {} done".format(self.female_k, len(all_females)))
 
         # copy current pedigree data before reproduction and increment generation number
         new_pedigree_data = self.pedigree.data
@@ -196,3 +199,51 @@ class Simulator:
         self.pedigree = Pedigree(new_pedigree_data)
 
         return new_pedigree_data
+
+    def plot_inbreeding_by_gen(self):
+        """Plot average inbreeding coefficients by generation.
+
+        Average inbreeding coefficients by generation is calculated and displayed as a basic line graph. All
+        generations that have been generated in a Simulator instance is displayed.
+        """
+        gen = list(range(0, self.gen + 1))
+        avg_inbreeding = []
+
+        for i in range(self.gen + 1):
+            avg_inbreeding.append(get_avg_inbreeding(self.pedigree, i))
+
+        plt.plot(gen, avg_inbreeding)
+        plt.xticks(np.arange(0, self.gen + 1, 1))
+        plt.xlabel("Generation")
+        plt.ylabel("Inbreeding Coefficient")
+        plt.title("Average Inbreeding Coefficient by Generation")
+        plt.show()
+
+    def plot_ebv_by_gen(self):
+        """Plot average EBV by generation.
+
+        Average EBV by generation is calculated and displayed as a basic line graph. All generations that have been
+        generated in a Simulator instance is displayed.
+        """
+        gen = list(range(0, self.gen + 1))
+        avg_ebv = []
+
+        for i in range(self.gen + 1):
+            avg_ebv.append(self.pedigree.get_avg_ebv(i))
+
+        plt.plot(gen, avg_ebv)
+        plt.xticks(np.arange(0, self.gen + 1, 1))
+        plt.xlabel("Generation")
+        plt.ylabel("Estimated Breeding Value")
+        plt.title("Average Estimated Breeding Value by Generation")
+        plt.show()
+
+    def export_to_csv(self, filename):
+        """Exports generated pedigree data as csv.
+
+        Writes pedigree data that have been generated in a Simulator instance to a comma-separated values (csv) file.
+
+        Args:
+            filename: A name of the path object or file-like object to export to.
+        """
+        self.pedigree.data.to_csv(filename)
