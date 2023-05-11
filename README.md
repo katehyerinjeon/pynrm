@@ -3,10 +3,10 @@
 `pynrm` is a lightweight and extensible Python library for livestock breeding simulation.
 
 ![Build Status](https://github.com/katehyerinjeon/pynrm/actions/workflows/build.yml/badge.svg)
-![PyPI](https://img.shields.io/pypi/v/pynrm)
+[![PyPI](https://img.shields.io/pypi/v/pynrm)](https://pypi.org/project/pynrm/)
 [![codecov](https://codecov.io/gh/katehyerinjeon/pynrm/branch/main/graph/badge.svg)](https://codecov.io/gh/katehyerinjeon/pynrm)
 ![GitHub](https://img.shields.io/github/license/katehyerinjeon/pynrm)
-![GitHub issues](https://img.shields.io/github/issues/katehyerinjeon/pynrm)
+[![GitHub issues](https://img.shields.io/github/issues/katehyerinjeon/pynrm)](https://github.com/katehyerinjeon/pynrm/issues)
 [![Docs](https://img.shields.io/readthedocs/pynrm.svg)](https://pynrm.readthedocs.io/)
 
 ## Overview
@@ -21,7 +21,7 @@ One major bottleneck to running these simulations is that as the number of anima
 `pynrm` is available on PyPI:
 
 ```shell
-$ pip install pyrnm
+$ pip install pynrm
 ```
 
 ### Supported Features
@@ -29,13 +29,25 @@ $ pip install pyrnm
 ```python
 from pynrm import Pedigree, Simulator
 
-pedigree = Pedigree()
-simulator = Simulator(pedigree, 10, 100, 0.6, 1)
+# Create a simulator instance
+simulator = Simulator(Pedigree(50, 50), 5, 20, 0.6, 0.0)
 
-simulator.reproduce()
+# Reproduce 4 generations
+for i in range(4):
+    simulator.reproduce()
 ```
 
-- Data visualization and analysis of simulation results (COMING SOON)
+- Data visualization and analysis of simulation results
+```python
+# Plot average inbreeding coefficients by generation
+simulator.plot_inbreeding_by_gen()
+
+# Plot average EBV by generation
+simulator.plot_ebv_by_gen()
+
+# Export generated pedigree data as csv
+simulator.export_to_csv("pedigree.csv")
+```
 
 ## Documentation
 Official documentation is available [here](https://pynrm.readthedocs.io/).

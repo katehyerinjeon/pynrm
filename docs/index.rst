@@ -39,12 +39,31 @@ Supported Features
 
    from pynrm import Pedigree, Simulator
 
-   pedigree = Pedigree()
-   simulator = Simulator(pedigree, 10, 100, 0.6, 1)
+   # Create a simulator instance
+   simulator = Simulator(Pedigree(50, 50), 5, 20, 0.6, 0.0)
 
-   simulator.reproduce()
+   # Reproduce 4 generations
+   for i in range(4):
+      simulator.reproduce()
 
 -  Data visualization and analysis of simulation results
+
+.. code:: python
+
+   # Plot average inbreeding coefficients by generation
+   simulator.plot_inbreeding_by_gen()
+
+   # Plot average EBV by generation
+   simulator.plot_ebv_by_gen()
+
+   # Export generated pedigree data as csv
+   simulator.export_to_csv("pedigree.csv")
+
+.. image:: images/fig1.png
+   :width: 600
+
+.. image:: images/fig2.png
+   :width: 600
 
 Reference
 ---------
