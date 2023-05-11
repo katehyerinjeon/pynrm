@@ -1,34 +1,35 @@
 import unittest
-from pynrm.Pedigree import Pedigree
-from pynrm.Simulator import Simulator
+from unittest import mock
+import pynrm.Simulator as Simulator
+import pynrm.Pedigree as Pedigree
 
 
 class TestSimulator(unittest.TestCase):
     def setUp(self):
-        self.simulator = Simulator(Pedigree(), 2, 4, 0.6, 0.2)
+        self.simulator = Simulator.Simulator(Pedigree.Pedigree(), 2, 4, 0.6, 0.2)
 
     def tearDown(self):
         self.simulator = None
 
     def test_simulator(self):
         with self.assertRaises(TypeError):
-            Simulator("not dataframe", 2, 4, 0.6, 0.2)
+            Simulator.Simulator("not dataframe", 2, 4, 0.6, 0.2)
         with self.assertRaises(TypeError):
-            Simulator(self.simulator.pedigree, "not int", 4, 0.6, 0.2)
+            Simulator.Simulator(self.simulator.pedigree, "not int", 4, 0.6, 0.2)
         with self.assertRaises(TypeError):
-            Simulator(self.simulator.pedigree, 2, "not int", 0.6, 0.2)
+            Simulator.Simulator(self.simulator.pedigree, 2, "not int", 0.6, 0.2)
         with self.assertRaises(TypeError):
-            Simulator(self.simulator.pedigree, 2, 4, "not float", 0.2)
+            Simulator.Simulator(self.simulator.pedigree, 2, 4, "not float", 0.2)
         with self.assertRaises(TypeError):
-            Simulator(self.simulator.pedigree, 2, 4, 0.6, "not float")
+            Simulator.Simulator(self.simulator.pedigree, 2, 4, 0.6, "not float")
         with self.assertRaises(ValueError):
-            Simulator(self.simulator.pedigree, -2, 4, 0.6, 0.2)
+            Simulator.Simulator(self.simulator.pedigree, -2, 4, 0.6, 0.2)
         with self.assertRaises(ValueError):
-            Simulator(self.simulator.pedigree, 2, -4, 0.6, 0.2)
+            Simulator.Simulator(self.simulator.pedigree, 2, -4, 0.6, 0.2)
         with self.assertRaises(ValueError):
-            Simulator(self.simulator.pedigree, 2, 4, -0.6, 0.2)
+            Simulator.Simulator(self.simulator.pedigree, 2, 4, -0.6, 0.2)
         with self.assertRaises(ValueError):
-            Simulator(self.simulator.pedigree, 2, 4, 0.6, -0.2)
+            Simulator.Simulator(self.simulator.pedigree, 2, 4, 0.6, -0.2)
 
     def test_get_ebv(self):
         with self.assertRaises(ValueError):
@@ -59,6 +60,23 @@ class TestSimulator(unittest.TestCase):
     def test_reproduce(self):
         self.simulator.reproduce()
         self.assertEqual(self.simulator.gen, 1, "generation not incremented")
+
+    @mock.patch("%s.Simulator.plt" % __name__)
+    def test_plot_inbreeding_by_gen(self, mock_plt):
+        self.simulator.reproduce()
+        self.simulator.plot_inbreeding_by_gen()
+        mock_plt.title.assert_called_once_with("Average Inbreeding Coefficient by Generation")
+
+    @mock.patch("%s.Simulator.plt" % __name__)
+    def test_plot_ebv_by_gen(self, mock_plt):
+        self.simulator.reproduce()
+        self.simulator.plot_ebv_by_gen()
+        mock_plt.title.assert_called_once_with("Average Estimated Breeding Value by Generation")
+
+    def test_export_to_csv(self):
+        with mock.patch.object(self.simulator.pedigree.data, "to_csv") as to_csv_mock:
+            self.simulator.export_to_csv("pedigree.csv")
+            to_csv_mock.assert_called_with("pedigree.csv")
 
 
 if __name__ == "__main__":
