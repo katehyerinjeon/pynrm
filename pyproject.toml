@@ -11,7 +11,7 @@ name = "pynrm"
 authors = [{name = "Kate Jeon", email = "hj2589@columbia.edu"}]
 description="A python library for animal breeding simulation"
 readme = "README.md"
-version = "0.1.1"
+version = "0.1.2"
 requires-python = ">=3.7"
 
 dependencies = ["numpy", "pandas", "matplotlib"]
